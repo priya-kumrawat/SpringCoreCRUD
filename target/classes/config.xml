@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/util
+    http://www.springframework.org/schema/util/spring-util.xsd">
+
+
+	
+<!-- when we using mySQL 5 to 7 then you must to use com.mysql.jdbc.Driver -->
+<!-- when we using mySQL 8 and above then you must to use com.mysql.cj.jdbc.Driver -->
+
+<!--Since Spring 3.1 the id attribute is an xsd:string and permits 
+    the same range of characters as the name attribute.
+    The only difference between an id and a name is that
+    a name can contain multiple aliases separated by a comma, 
+    semicolon or whitespace, whereas an id must be a single value.-->
+    
+	<!--Spring Core DataSource Inject -->
+	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="ds">
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/springjdbcex" />
+		<property name="username" value="root" />
+		<property name="password" value="rootpwd" />
+	</bean>
+
+	<!-- Object Inject -->
+	<bean class="org.springframework.jdbc.core.JdbcTemplate" id="jdbcTemplate" > 
+		<property name="dataSource">
+			<ref bean="ds" />
+		</property>
+	</bean>
+	
+	<!-- Student Object Inject -->
+	<bean class="com.uni.daoImpl.StudentDaoImpl" name="studentDaoImpl">
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
+	</bean>
+</beans>
